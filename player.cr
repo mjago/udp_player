@@ -4,6 +4,7 @@ require "uri"
 include Libao
 
 class UdpPlayer
+  MSG_SIZE = 4096
 
   def initialize
     @ao = Ao.new
@@ -18,8 +19,8 @@ class UdpPlayer
 
   def play
     spawn do
+      message = Bytes.new(MSG_SIZE)
       while @quit == false
-        message = Bytes.new(4096)
         size, client_addr = @server.receive(message)
         @playdata.send(message)
         @playsize.send(size)
@@ -55,11 +56,11 @@ class UdpPlayer
     @ao.open_live
   end
 
-  private def address() : { host: String, port: Int32 }
+  private def address : {host: String, port: Int32}
     if ARGV.size == 2
       host, port = ARGV[0], ARGV[1].to_i
     else
-      host, port  = "localhost", 7355
+      host, port = "localhost", 7355
     end
     {host: host, port: port}
   end
@@ -68,5 +69,3 @@ end
 player = UdpPlayer.new
 player.play
 player.exit if gets
-
-
