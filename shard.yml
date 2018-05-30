@@ -1,0 +1,14 @@
+name: udp_player
+version: 0.1.0
+
+authors:
+  - name <email@example.com>
+
+# description: |
+#   Short description of
+
+dependencies:
+  libao:
+    github: mjago/libao
+
+license: MIT
