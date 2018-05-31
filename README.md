@@ -1,3 +1,3 @@
 ## UDP Audio Player
 
-`./player localhost 7355`
+Usage: `./udp_player` or `./udp_player localhost 7355`
