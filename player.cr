@@ -1,10 +1,16 @@
 require "socket"
 require "libao"
-require "uri"
+
 include Libao
 
 class UdpPlayer
-  MSG_SIZE = 4096
+  MSG_SIZE     =  4096
+  BITS         =    16
+  RATE         = 48000
+  CHANNELS     =     1
+  BYTE_FORMAT  = LibAO::Byte_Format::AO_FMT_BIG
+  DEFAULT_HOST = "localhost"
+  DEFAULT_PORT = 18080
 
   def initialize
     @ao = Ao.new
@@ -48,21 +54,13 @@ class UdpPlayer
   end
 
   private def init_audio
-    bits = 16
-    rate = 48000
-    channels = 1
-    byte_format = LibAO::Byte_Format::AO_FMT_BIG
-    @ao.set_format(bits, rate, channels, byte_format, matrix = nil)
+    @ao.set_format(BITS, RATE, CHANNELS, BYTE_FORMAT, matrix = nil)
     @ao.open_live
   end
 
-  private def address : {host: String, port: Int32}
-    if ARGV.size == 2
-      host, port = ARGV[0], ARGV[1].to_i
-    else
-      host, port = "localhost", 7355
-    end
-    {host: host, port: port}
+  private def address
+    return {host: ARGV[0], port: ARGV[1].to_i} if ARGV.size == 2
+    {host: DEFAULT_HOST, port: DEFAULT_PORT}
   end
 end
 
