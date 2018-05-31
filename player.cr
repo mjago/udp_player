@@ -51,6 +51,7 @@ class UdpPlayer
   private def bind_to_server
     adr = address
     @server.bind(adr[:host], adr[:port])
+    puts "Server listening on #{adr[:host]}:#{adr[:port]}"
   end
 
   private def init_audio
